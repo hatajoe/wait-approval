@@ -1,0 +1,9 @@
+name: Wait Approval
+description: pause workflow and wait for approval
+inputs:
+  github-pull-request-number:
+    description: GitHub PullRequest Number (e.g, ${{ github.event.pull_request.number }})
+    required: true
+runs:
+  using: docker
+  image: docker://ghcr.io/hatajoe/wait-approval:1.0.0
