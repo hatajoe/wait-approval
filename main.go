@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/google/go-github/v43/github"
@@ -30,8 +31,7 @@ var (
 
 func init() {
 	launchedAt = time.Now()
-
-	githubRepository = os.Getenv("GITHUB_REPOSITORY")
+	githubRepository = strings.Split(os.Getenv("GITHUB_REPOSITORY"), "/")[1]
 	if githubRepository == "" {
 		log.Fatal("GITHUB_REPOSITORY env value must be specified")
 	}
