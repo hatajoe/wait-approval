@@ -14,6 +14,6 @@ steps:
   - uses: hatajoe/wait-approval@v1
     with:
       github-pull-request-number: ${{ github.event.pull_request.number }}
-		env:
-			GITHUB_TOKEN: ${{ secret.GITHUB_TOKEN }}
+    env:
+      GITHUB_TOKEN: ${{ secret.GITHUB_TOKEN }}
 ```
