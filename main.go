@@ -82,11 +82,25 @@ func main() {
 
 					body := comment.GetBody()
 					if matched, err := regexp.MatchString(fmt.Sprintf("^%s$", approvalComment), body); matched && err == nil {
-						log.Printf("prcess has approved by %s.", comment.GetUser().GetLogin())
+						comment := fmt.Sprintf("workflow has approved by %s.", comment.GetUser().GetLogin())
+						if _, _, err := client.Issues.CreateComment(ctx, githubRepositoryOwner, githubRepository, githubPullRequestNumber, &github.IssueComment{
+							Body: &comment,
+						}); err != nil {
+							ch <- err
+							return
+						}
+						log.Print(comment)
 						return
 					}
 					if matched, err := regexp.MatchString(fmt.Sprintf("^%s$", denyComment), body); matched && err == nil {
-						ch <- fmt.Errorf("process has denied by %s.", comment.GetUser().GetLogin())
+						comment := fmt.Sprintf("workflow has denied by %s.", comment.GetUser().GetLogin())
+						if _, _, err := client.Issues.CreateComment(ctx, githubRepositoryOwner, githubRepository, githubPullRequestNumber, &github.IssueComment{
+							Body: &comment,
+						}); err != nil {
+							ch <- err
+							return
+						}
+						ch <- fmt.Errorf(comment)
 						return
 					}
 				}
