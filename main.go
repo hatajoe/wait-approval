@@ -68,6 +68,14 @@ func main() {
 			close(ch)
 		}()
 
+		greeting := fmt.Sprintf("Please `/approve` or `/deny` workflow.")
+		if _, _, err := client.Issues.CreateComment(ctx, githubRepositoryOwner, githubRepository, githubPullRequestNumber, &github.IssueComment{
+			Body: &greeting,
+		}); err != nil {
+			ch <- err
+			return
+		}
+
 		for {
 			for range ticker.C {
 				comments, _, err := client.Issues.ListComments(ctx, githubRepositoryOwner, githubRepository, githubPullRequestNumber, &github.IssueListCommentsOptions{})
